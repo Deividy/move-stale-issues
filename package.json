@@ -1,0 +1,35 @@
+{
+    "name": "move-stale-issues",
+    "version": "0.0.1",
+    "description": "Automatically move issues to a milestone",
+    "main": "index.js",
+    "scripts": {
+        "test": "./node_modules/mocha/bin/mocha *.test.js --no-timeout",
+        "lint": "DEBUG=eslint:cli-engine ./node_modules/eslint/bin/eslint.js index.js move-stale-issues.test.js move-stale-issues.js",
+        "compile": "./node_modules/browserify/bin/cmd.js index.js > dist/move-stale-issues.js"
+    },
+    "author": "Deividy Metheler Zachetti",
+    "license": "MIT",
+    "dependencies": {
+        "@actions/core": "^1.6.0",
+        "@actions/github": "^5.0.0"
+    },
+    "devDependencies": {
+        "browserify": "^17.0.0",
+        "eslint": "^8.7.0",
+        "mocha": "^9.1.4"
+    },
+
+    "keywords": [
+        "github-actions",
+        "move stale issues",
+        "move issues to milestone",
+        "move issues",
+        "action issue"
+    ],
+
+    "bugs": {
+        "url": "https://github.com/Deividy/move-stale-issues/issues"
+    },
+    "homepage": "https://github.com/Deividy/move-stale-issues"
+}
