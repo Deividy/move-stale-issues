@@ -13,7 +13,7 @@ This project is inspired by the https://github.com/actions/stale, but, since the
 | `repo-token` | The github token. `${{ secrets.GITHUB_TOKEN }}`) | *required |
 | `from-milestone` | The milestone name that we will look for stale issues<br /> you can pass milestone separated by comma (Milestone1, Milestone2...) | *required |
 | `target-milestone` | The milestone we will move the stale issues | *required |
-| `days-before-stale` | Total of days we consider an issue stale | 30 |
+| `days-before-stale` | Total of days we consider an issue stale<br />0 will move all issues `from-milestone` to `target-milestone` | 30 |
 
 ---
 
