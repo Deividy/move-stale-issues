@@ -1,6 +1,6 @@
 {
     "name": "move-stale-issues",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "Automatically move issues to a milestone",
     "main": "index.js",
     "scripts": {
@@ -19,7 +19,6 @@
         "eslint": "^8.7.0",
         "mocha": "^9.1.4"
     },
-
     "keywords": [
         "github-actions",
         "move stale issues",
@@ -27,7 +26,6 @@
         "move issues",
         "action issue"
     ],
-
     "bugs": {
         "url": "https://github.com/Deividy/move-stale-issues/issues"
     },
