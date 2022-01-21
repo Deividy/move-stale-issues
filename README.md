@@ -1,4 +1,6 @@
 # Move Stale Issues
+[![sheriff](https://github.com/Deividy/move-stale-issues/actions/workflows/sheriff.yml/badge.svg)](https://github.com/Deividy/move-stale-issues/actions/workflows/sheriff.yml)
+
 
 This actions moves stales issues `from-milestone` to `target-milestone`.
 
