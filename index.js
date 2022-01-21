@@ -9,6 +9,7 @@ async function run() {
     const targetMilestone = core.getInput('target-milestone');
     const fromMilestone = core.getInput('from-milestone');
     const daysBeforeStale = core.getInput('days-before-stale') || 30;
+    const exemptAllAssignees = core.getInput('exempt-all-assignees') || false;
 
     if (!fromMilestone || !targetMilestone || !token) {
         throw new Error('repo-token, label-name, target-milestone are required');
@@ -17,6 +18,7 @@ async function run() {
     const config = {
         token,
         targetMilestone,
+        exemptAllAssignees,
         daysBeforeStale: Number(daysBeforeStale),
         fromMilestone: fromMilestone.split(',')
     };

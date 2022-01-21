@@ -33,22 +33,20 @@ async function runAction(config, context) {
         token,
         fromMilestone,
         targetMilestone,
-        daysBeforeStale
+        daysBeforeStale = 30,
+        exemptAllAssignees = false
     } = config;
 
     logger.info('Starting action with params:');
-    logger.info(`\tfrom-milestone: ${fromMilestone}`);
-    logger.info(`\ttarget-milestone: ${targetMilestone}`);
-    logger.info(`\tdays-before-stale: ${daysBeforeStale}`);
+    logger.info(`\tfromMilestone: ${fromMilestone}`);
+    logger.info(`\ttargetMilestone: ${targetMilestone}`);
+    logger.info(`\tdaysBeforeStale: ${daysBeforeStale}`);
+    logger.info(`\texemptAllAssignees: ${exemptAllAssignees}`);
     logger.info(`\trepo owner: ${context.owner}`);
     logger.info(`\trepo: ${context.repo}`);
 
     const { repo, owner } = context;
     const octokit = github.getOctokit(token);
-
-    // find milestone id from and target
-    // get issues from milestone/label
-    // update every issue milestone
 
     logger.info('Trying to get milestones...');
     const { data: milestones } = await octokit.rest.issues.listMilestones({
@@ -97,6 +95,12 @@ async function runAction(config, context) {
         logger.info(`\tLast update on issue #${number} was ${diff} days ago.`);
 
         if (daysBeforeStale === 0 || diff >= daysBeforeStale) {
+            if (exemptAllAssignees && issue.assignees.length) {
+                logger.info(`\t[stale] Issue #${number} is stale, ` +
+                    'but has assignees, skipping...');
+
+                continue;
+            }
 
             logger.info(`\t[stale] Issue #${number} is stale, moving...`);
 
