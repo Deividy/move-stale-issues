@@ -29,7 +29,7 @@ jobs:
   move-stale-issues:
     runs-on: ubuntu-latest
     steps:
-      - uses: Deividy/move-stale-issues
+      - uses: Deividy/move-stale-issues@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           from-milestone: WIP
