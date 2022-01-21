@@ -75,12 +75,15 @@ async function runAction(config, context) {
     logger.info(`\tTarget milestone id: #${targetMilestoneId}`);
 
     logger.info('Trying to get issues...');
-    const { data: issues } = await octokit.rest.issues.listForRepo({
+    const opts = {
         owner,
         repo,
         state: 'open',
         milestone: fromMilestoneIds.join(',')
-    });
+    };
+
+    if (exemptAllAssignees) { opts.assignee = 'none'; }
+    const issues = await octokit.paginate(octokit.rest.issues.listForRepo, opts);
 
     logger.info(`Found ${issues.length} issues, checking stale...`);
 
@@ -88,20 +91,14 @@ async function runAction(config, context) {
     let totalMoved = 0;
 
     for (const issue of issues) {
-        const { number, updated_at } = issue;
+        const { number, updated_at, pull_request } = issue;
+        if (pull_request) { continue; }
 
         const issueDate = new Date(updated_at);
         const diff = getDaysDiff(now, issueDate);
         logger.info(`\tLast update on issue #${number} was ${diff} days ago.`);
 
         if (daysBeforeStale === 0 || diff >= daysBeforeStale) {
-            if (exemptAllAssignees && issue.assignees.length) {
-                logger.info(`\t[stale] Issue #${number} is stale, ` +
-                    'but has assignees, skipping...');
-
-                continue;
-            }
-
             logger.info(`\t[stale] Issue #${number} is stale, moving...`);
 
             await octokit.rest.issues.update({
