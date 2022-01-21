@@ -1,0 +1,36 @@
+name: sheriff
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  sheriff:
+    runs-on: ubuntu-latest
+
+    env:
+      REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO_NAME: move-stale-issues
+      REPO_OWNER: Deividy
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: npm
+          cache-dependency-path: ./package-lock.json
+
+      - name: install deps nodejs
+        working-directory: ./
+        run: |
+          npm install
+
+      - name: eslint
+        working-directory: ./
+        run: npm run-script lint
+
+      - name: runs tests
+        working-directory: ./
+        run: npm test
