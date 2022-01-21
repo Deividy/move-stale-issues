@@ -1,6 +1,6 @@
 {
     "name": "move-stale-issues",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Automatically move issues to a milestone",
     "main": "index.js",
     "scripts": {
