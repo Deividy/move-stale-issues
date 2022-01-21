@@ -1,8 +1,6 @@
-name: 'Move issues to a mileston'
-description: 'Move issues to a milestone'
-branding:
-  icon: 'move'
-  color: 'green'
+name: 'Move Stale Issues'
+description: 'Move stale issues to a milestone'
+author: 'Deividy'
 inputs:
   repo-token:
     description: 'Token for the repo. The usual secrets.GITHUB_TOKEN'
