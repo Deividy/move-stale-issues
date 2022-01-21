@@ -1,0 +1,26 @@
+name: 'Move issues to a mileston'
+description: 'Move issues to a milestone'
+branding:
+  icon: 'move'
+  color: 'green'
+inputs:
+  repo-token:
+    description: 'Token for the repo. The usual secrets.GITHUB_TOKEN'
+    required: true
+
+  from-milestone:
+    description: 'From milestone to move the issues'
+    required: false
+
+  target-milestone:
+    description: 'Target milestone to move the issues'
+    required: true
+
+  days-before-stale:
+    description: 'The total of days we consider an issue stale'
+    required: false
+    default: 30
+
+runs:
+  using: 'node16'
+  main: 'dist/move-stale-issues.js'
