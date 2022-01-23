@@ -62,20 +62,6 @@ describe('Move Stale Issues', () => {
             daysBeforeStale: 0
         }, { repo, owner });
 
-        await octokit.rest.issues.updateMilestone({
-            owner,
-            repo,
-            state: 'closed',
-            milestone_number: fromMilestoneResponse.number
-        });
-
-        await octokit.rest.issues.updateMilestone({
-            owner,
-            repo,
-            state: 'closed',
-            milestone_number: targetMilestoneResponse.number
-        });
-
         const { data: issuesInTarget } = await octokit.rest.issues.listForRepo({
             owner,
             repo,
@@ -88,6 +74,18 @@ describe('Move Stale Issues', () => {
             repo,
             state: 'open',
             milestone: fromMilestoneResponse.number
+        });
+
+        await octokit.rest.issues.deleteMilestone({
+            owner,
+            repo,
+            milestone_number: fromMilestoneResponse.number
+        });
+
+        await octokit.rest.issues.deleteMilestone({
+            owner,
+            repo,
+            milestone_number: targetMilestoneResponse.number
         });
 
         assert.strictEqual(issuesInTarget.length, 1);
@@ -165,19 +163,6 @@ describe('Move Stale Issues', () => {
             milestone: fromMilestoneResponse.number
         });
 
-        assert.strictEqual(issuesInTarget.length, 1);
-        assert.strictEqual(issuesInFrom.length, 1);
-
-        for (const issue of issuesInFrom.concat(issuesInTarget)) {
-            await octokit.rest.issues.update({
-                owner,
-                repo,
-                issue_number: issue.number,
-                state: 'closed',
-                milestone: null
-            });
-        }
-
         await octokit.rest.issues.deleteMilestone({
             owner,
             repo,
@@ -189,5 +174,18 @@ describe('Move Stale Issues', () => {
             repo,
             milestone_number: targetMilestoneResponse.number
         });
+
+        assert.strictEqual(issuesInTarget.length, 1);
+        assert.strictEqual(issuesInFrom.length, 1);
+
+        for (const issue of issuesInFrom.concat(issuesInTarget)) {
+            await octokit.rest.issues.update({
+                owner,
+                repo,
+                issue_number: issue.number,
+                state: 'closed'
+            });
+
+        }
     });
 });
