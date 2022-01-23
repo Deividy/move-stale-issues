@@ -83,21 +83,21 @@ async function runAction(config, context) {
     };
 
     if (exemptAllAssignees) { opts.assignee = 'none'; }
-    const issues = await octokit.paginate(octokit.rest.issues.listForRepo, opts);
-
-    logger.info(`Found ${issues.length} issues, checking stale...`);
 
     const now = new Date();
     let totalMoved = 0;
 
-    for (const issue of issues) {
+    const fn = octokit.rest.issues.listForRepo;
+    for await (const response of octokit.paginate.iterator(fn, opts)) {
+        const issue = response.data[0];
         const { number, updated_at, pull_request } = issue;
+
         if (pull_request) { continue; }
 
         const issueDate = new Date(updated_at);
         const diff = getDaysDiff(now, issueDate);
-        logger.info(`\tLast update on issue #${number} was ${diff} days ago.`);
 
+        logger.info(`\tLast update on issue #${number} was ${diff} days ago.`);
         if (daysBeforeStale === 0 || diff >= daysBeforeStale) {
             logger.info(`\t[stale] Issue #${number} is stale, moving...`);
 
