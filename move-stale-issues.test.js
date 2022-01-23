@@ -151,20 +151,6 @@ describe('Move Stale Issues', () => {
             exemptAllAssignees: true
         }, { repo, owner });
 
-        await octokit.rest.issues.updateMilestone({
-            owner,
-            repo,
-            state: 'closed',
-            milestone_number: fromMilestoneResponse.number
-        });
-
-        await octokit.rest.issues.updateMilestone({
-            owner,
-            repo,
-            state: 'closed',
-            milestone_number: targetMilestoneResponse.number
-        });
-
         const { data: issuesInTarget } = await octokit.rest.issues.listForRepo({
             owner,
             repo,
@@ -177,6 +163,18 @@ describe('Move Stale Issues', () => {
             repo,
             state: 'open',
             milestone: fromMilestoneResponse.number
+        });
+
+        await octokit.rest.issues.deleteMilestone({
+            owner,
+            repo,
+            milestone_number: fromMilestoneResponse.number
+        });
+
+        await octokit.rest.issues.deleteMilestone({
+            owner,
+            repo,
+            milestone_number: targetMilestoneResponse.number
         });
 
         assert.strictEqual(issuesInTarget.length, 1);
