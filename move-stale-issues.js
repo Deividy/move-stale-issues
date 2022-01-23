@@ -89,29 +89,32 @@ async function runAction(config, context) {
 
     const fn = octokit.rest.issues.listForRepo;
     for await (const response of octokit.paginate.iterator(fn, opts)) {
-        const issue = response.data[0];
-        const { number, updated_at, pull_request } = issue;
+        const issues = response.data;
 
-        if (pull_request) { continue; }
+        for (const issue of issues) {
+            const { number, updated_at, pull_request } = issue;
 
-        const issueDate = new Date(updated_at);
-        const diff = getDaysDiff(now, issueDate);
+            if (pull_request) { continue; }
 
-        logger.info(`\tLast update on issue #${number} was ${diff} days ago.`);
-        if (daysBeforeStale === 0 || diff >= daysBeforeStale) {
-            logger.info(`\t[stale] Issue #${number} is stale, moving...`);
+            const issueDate = new Date(updated_at);
+            const diff = getDaysDiff(now, issueDate);
 
-            await octokit.rest.issues.update({
-                owner,
-                repo,
-                issue_number: number,
-                milestone: targetMilestoneId
-            });
+            logger.info(`\tLast update on issue #${number} was ${diff} days ago.`);
+            if (daysBeforeStale === 0 || diff >= daysBeforeStale) {
+                logger.info(`\t[stale] Issue #${number} is stale, moving...`);
 
-            logger.info(`\t[stale] Issue #${number} moved: ${targetMilestone}`);
-            totalMoved++;
-        } else {
-            logger.info(`\t[not stale] Issue #${number} is NOT stale.`);
+                await octokit.rest.issues.update({
+                    owner,
+                    repo,
+                    issue_number: number,
+                    milestone: targetMilestoneId
+                });
+
+                logger.info(`\t[stale] Issue #${number} moved: ${targetMilestone}`);
+                totalMoved++;
+            } else {
+                logger.info(`\t[not stale] Issue #${number} is NOT stale.`);
+            }
         }
     }
 
