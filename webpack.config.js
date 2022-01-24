@@ -10,8 +10,9 @@ module.exports = {
         filename: 'github-action.js',
         path: path.resolve(__dirname, 'dist')
     },
+
     optimization: {
-        minimizer: [ new TerserPlugin({ extractComments: false }) ],
-    },
+        minimizer: [ new TerserPlugin({ extractComments: false }) ]
+    }
 };
 
