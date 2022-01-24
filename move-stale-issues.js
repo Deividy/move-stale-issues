@@ -28,7 +28,7 @@ function getDaysDiff(startDate, endDate) {
     return diffInDays;
 }
 
-async function runAction(config, context) {
+async function runAction(owner, repo, config) {
     const {
         token,
         fromMilestone,
@@ -42,10 +42,9 @@ async function runAction(config, context) {
     logger.info(`\ttargetMilestone: ${targetMilestone}`);
     logger.info(`\tdaysBeforeStale: ${daysBeforeStale}`);
     logger.info(`\texemptAllAssignees: ${exemptAllAssignees}`);
-    logger.info(`\trepo owner: ${context.owner}`);
-    logger.info(`\trepo: ${context.repo}`);
+    logger.info(`\trepo owner: ${owner}`);
+    logger.info(`\trepo: ${repo}`);
 
-    const { repo, owner } = context;
     const octokit = github.getOctokit(token);
 
     logger.info('Trying to get milestones...');

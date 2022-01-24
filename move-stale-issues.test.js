@@ -55,12 +55,12 @@ describe('Move Stale Issues', () => {
             milestone: fromMilestoneResponse.number
         });
 
-        await runAction({
+        await runAction(owner, repo, {
             token,
             fromMilestone,
             targetMilestone,
             daysBeforeStale: 0
-        }, { repo, owner });
+        });
 
         const { data: issuesInTarget } = await octokit.rest.issues.listForRepo({
             owner,
@@ -141,13 +141,13 @@ describe('Move Stale Issues', () => {
             milestone: fromMilestoneResponse.number
         });
 
-        await runAction({
+        await runAction(owner, repo, {
             token,
             fromMilestone,
             targetMilestone,
             daysBeforeStale: 0,
             exemptAllAssignees: true
-        }, { repo, owner });
+        });
 
         const { data: issuesInTarget } = await octokit.rest.issues.listForRepo({
             owner,
