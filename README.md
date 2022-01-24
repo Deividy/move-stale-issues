@@ -31,17 +31,14 @@ npm install move-stale-issues
 ```
 
 ```javascript
-const { runAction } = require('move-stale-issues/move-stale-issues');
+const { runAction } = require('move-stale-issues');
 
 (async () => {
-  await runAction({
+  await runAction('my-repo', 'repo-owner', {
     token: 'PAT',
     fromMilestone: 'From name',
     targetMilestone: 'Target name',
     daysBeforeStale: 30
-  }, {
-    repo: 'my-repo',
-    owner: 'repo-owner' 
   });
 ```
 
@@ -59,7 +56,7 @@ jobs:
   move-stale-issues:
     runs-on: ubuntu-latest
     steps:
-      - uses: Deividy/move-stale-issues@v2.5
+      - uses: Deividy/move-stale-issues@v3
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           from-milestone: WIP
