@@ -34,7 +34,7 @@ npm install move-stale-issues
 const { runAction } = require('move-stale-issues');
 
 (async () => {
-  await runAction('my-repo', 'repo-owner', {
+  await runAction('repo-owner', 'repo-name', {
     token: 'PAT',
     fromMilestone: 'From name',
     targetMilestone: 'Target name',
