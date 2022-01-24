@@ -1,6 +1,8 @@
 # Move Stale Issues
 [![sheriff](https://github.com/Deividy/move-stale-issues/actions/workflows/sheriff.yml/badge.svg)](https://github.com/Deividy/move-stale-issues/actions/workflows/sheriff.yml)
 
+[![NPM](https://nodei.co/npm/move-stale-issues.png?mini=true)](https://www.npmjs.com/package/move-stale-issues)
+
 
 This actions moves stales issues `from-milestone` to `target-milestone`.
 
@@ -17,6 +19,31 @@ This project is inspired by the https://github.com/actions/stale, but, since the
 | `target-milestone` | The milestone we will move the stale issues | *required |
 | `days-before-stale` | Total of days we consider an issue stale<br />0 will move all issues `from-milestone` to `target-milestone` | 30 |
 | `exempt-all-assignees` | Exempt all issues with assignees from stale | false |
+
+---
+
+## Using with Node.js
+
+You can also use this action in your node.js app:
+
+```shell
+npm install move-stale-issues
+```
+
+```javascript
+const { runAction } = require('move-stale-issues/move-stale-issues');
+
+(async () => {
+  await runAction({
+    token: 'PAT',
+    fromMilestone: 'From name',
+    targetMilestone: 'Target name',
+    daysBeforeStale: 30
+  }, {
+    repo: 'my-repo',
+    owner: 'repo-owner' 
+  });
+```
 
 ---
 
