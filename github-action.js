@@ -23,8 +23,8 @@ async function run() {
         fromMilestone: fromMilestone.split(',')
     };
 
-    const { context } = github;
-    await runAction(config, context.repo);
+    const { repo, owner } = github.context.repo;
+    await runAction(owner, repo, config);
 }
 
 (async() => {
