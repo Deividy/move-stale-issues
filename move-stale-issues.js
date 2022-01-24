@@ -79,6 +79,7 @@ async function runAction(config, context) {
         owner,
         repo,
         state: 'open',
+        per_page: 100,
         milestone: fromMilestoneIds.join(',')
     };
 
