@@ -1,11 +1,11 @@
 {
     "name": "move-stale-issues",
-    "version": "2.0.5",
+    "version": "3.0.0",
     "description": "Automatically move issues to a milestone",
-    "main": "index.js",
+    "main": "move-stale-issues.js",
     "scripts": {
         "test": "./node_modules/mocha/bin/mocha *.test.js --no-timeout",
-        "lint": "DEBUG=eslint:cli-engine ./node_modules/eslint/bin/eslint.js index.js move-stale-issues.test.js move-stale-issues.js",
+        "lint": "DEBUG=eslint:cli-engine ./node_modules/eslint/bin/eslint.js github-action.js move-stale-issues.test.js move-stale-issues.js",
         "build": "./node_modules/webpack/bin/webpack.js ."
     },
     "author": "Deividy Metheler Zachetti",
