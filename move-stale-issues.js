@@ -89,12 +89,13 @@ async function runAction(config, context) {
     let totalMoved = 0;
 
     const fn = octokit.rest.issues.listForRepo;
+    const issuesToMove = [];
+
     for await (const response of octokit.paginate.iterator(fn, opts)) {
         const issues = response.data;
 
         for (const issue of issues) {
             const { number, updated_at, pull_request } = issue;
-
             if (pull_request) { continue; }
 
             const issueDate = new Date(updated_at);
@@ -102,21 +103,26 @@ async function runAction(config, context) {
 
             logger.info(`\tLast update on issue #${number} was ${diff} days ago.`);
             if (daysBeforeStale === 0 || diff >= daysBeforeStale) {
-                logger.info(`\t[stale] Issue #${number} is stale, moving...`);
+                logger.info(`\t[stale] Issue #${number} is stale.`);
+                issuesToMove.push(issue);
 
-                await octokit.rest.issues.update({
-                    owner,
-                    repo,
-                    issue_number: number,
-                    milestone: targetMilestoneId
-                });
-
-                logger.info(`\t[stale] Issue #${number} moved: ${targetMilestone}`);
-                totalMoved++;
             } else {
                 logger.info(`\t[not stale] Issue #${number} is NOT stale.`);
             }
         }
+    }
+
+    for (const issue of issuesToMove) {
+        const { number } = issue;
+        await octokit.rest.issues.update({
+            owner,
+            repo,
+            issue_number: number,
+            milestone: targetMilestoneId
+        });
+
+        logger.info(`\t[stale] Issue #${number} moved to: ${targetMilestone}`);
+        totalMoved++;
     }
 
     logger.info('Done!');
